@@ -1,0 +1,16 @@
+.vacancy {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #eee !important;
+  padding: 8px;
+  margin: 10px;
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.vacancy__input {
+  width: 140px;
+  display: block !important;
+}

@@ -1,0 +1,33 @@
+.app-bar {
+  padding: 10px 20px;
+}
+.app-body {
+  margin: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.card {
+  width: 260px;
+  height: 270px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.card__add-hr {
+  width: 100%;
+  height: 100%;
+}
+
+.card-title{
+  padding: 10px;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
