@@ -5,39 +5,42 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import VacanciesList from '../VacanciesList/VacanciesList';
+import PassengersList from '../PassengersList/PassengersList';
 import {connect} from "react-redux";
-import {addHrAction, addVacancyAction, setHrsAction} from '../../actions';
-import {addHr, getHrs, addVacancy} from '../../models/AppModel';
+import {addFlightAction, addPassengerAction, setFlightsAction} from '../../actions';
+import {addFlight, getFlights, addPassenger} from '../../models/AppModel';
 
 class App extends React.Component {
   async componentDidMount() {
-    const hrs = await getHrs();
-    this.props.setHrsDispatch(hrs);
+    // const flights = await getFlights();
+    // this.props.setFlightsDispatch(flights);
   }
 
-  onClickAddHr() {
-    const hrName = prompt("Укажите имя HR сотрудника");
-    if (hrName) {
-      this.props.addHrDispatch(hrName);
-      addHr({
-        hrName: hrName,
-        vacancies: [],
-      }).then(info => console.log(info));
+  onClickAddFlight() {
+    const destination = prompt("Пункт назначения");
+    let time;
+    if (destination) {
+      time = prompt("Время");
+    }
+    let seatsCount;
+    if (time) {
+      seatsCount = prompt("Количество мест");
+    }
+    if (seatsCount) {
+      this.props.addFlightDispatch(destination, time, seatsCount)
+      // addFlight(
+      //  {destination, time, seatsCount},
+      // ).then(info => console.log(info));
     }
   }
 
-  onClickAddVacancy(hrId) {
-    const title = prompt("Укажите название вакансии");
-    let company;
-    if (title) {
-      company = prompt("Укажите название компании");
-    }
-    if (company) {
-      this.props.addVacancyDispatch(hrId, title, company)
-      addVacancy(
-        hrId, title, company,
-      ).then(info => console.log(info));
+  onClickAddPassenger(flightId) {
+    const surname = prompt("Введите фамилию");
+    if (surname) {
+      this.props.addPassengerDispatch(flightId, surname)
+      // addPassenger(
+      //   flightId, surname,
+      // ).then(info => console.log(info));
     }
   }
   render() {
@@ -45,33 +48,39 @@ class App extends React.Component {
       <div className="App">
         <AppBar position="static" className="app-bar">
           <Typography variant="h6" noWrap>
-            Рекрутинг
+            Авиарейсы
           </Typography>
         </AppBar>
         <div className="app-body">
           <Card className="card">
             <Button
               color="primary"
-              className="card__add-hr"
-              onClick={() => this.onClickAddHr()}
+              className="card__add-flight"
+              onClick={() => this.onClickAddFlight()}
             >
-              Добавить HR
+              Добавить Рейс
             </Button>
           </Card>
           {
-            this.props.hrs.map((hr, index) =>
+            this.props.flights.map((flight, index) =>
               <Card
                 key={index}
                 className="card"
               >
                 <div className="card-title">
                   <Typography gutterBottom variant="h6" component="h2">
-                    {hr.hrName}
+                    {flight.destination}
+                  </Typography>
+                  <Typography gutterBottom variant="h6" component="h2">
+                    {flight.time}
+                  </Typography>
+                  <Typography gutterBottom variant="h6" component="h2">
+                    {flight.seatsCount}
                   </Typography>
                 </div>
-                <VacanciesList
-                  vacancies={hr.vacancies}
-                  hrId={index}
+                <PassengersList
+                  passengers={flight.passengers}
+                  flightId={index}
                 />
                 <CardActions
                   className="card-actions"
@@ -79,9 +88,10 @@ class App extends React.Component {
                   <Button
                     size="small"
                     color="primary"
-                    onClick={()=>this.onClickAddVacancy(index)}
+                    onClick={()=>this.onClickAddPassenger(index)}
+                    disabled={!(flight.passengers.length < flight.seatsCount)}
                   >
-                    Добавить вакансию
+                    Забронировать билет
                   </Button>
                 </CardActions>
               </Card>
@@ -95,14 +105,14 @@ class App extends React.Component {
 
 const mapStateToProps= (store) => {
   return {
-    hrs: store.hrs,
+    flights: store.flights,
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-  setHrsDispatch: (hrs) => dispatch(setHrsAction(hrs)),
-  addHrDispatch: (hrName) => dispatch(addHrAction(hrName)),
-  addVacancyDispatch: (hrName, title, company) => dispatch(addVacancyAction(hrName, title, company))
+  setFlightsDispatch: (flights) => dispatch(setFlightsAction(flights)),
+  addFlightDispatch: (destination, time, seatsCount) => dispatch(addFlightAction(destination, time, seatsCount)),
+  addPassengerDispatch: (flightId, surname) => dispatch(addPassengerAction(flightId, surname))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

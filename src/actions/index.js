@@ -1,56 +1,40 @@
-export function setHrsAction(hrs) {
+export function setFlightsAction(flights) {
     return {
-        type: "SET_HRS",
-        hrs,
+        type: "SET_FLIGHT",
+        flights,
     }
 }
 
-export function addHrAction(hrName) {
+export function addFlightAction(destination, time, seatsCount) {
     return {
-        type: "ADD_HR",
-        hrName,
+        type: "ADD_FLIGHT",
+        destination,
+        time,
+        seatsCount,
     }
 }
 
-export function addVacancyAction(hrId, title, company) {
+export function addPassengerAction(flightId, surname) {
     return {
-        type: "ADD_VACANCY",
-        hrId,
-        title,
-        company,
+        type: "ADD_PASSENGER",
+        flightId,
+        surname
     }
 }
 
-export function deleteVacancyAction(hrId, vacancyId) {
+export function deletePassengerAction(flightId, passengerId) {
     return {
-        type: "DELETE_VACANCY",
-        hrId,
-        vacancyId,
+        type: "DELETE_PASSENGER",
+        flightId,
+        passengerId,
     }
 }
 
-export function editVacancyAction(hrId, vacancyId, title, company) {
+export function editPassengerAction(flightId, passengerId, surname) {
     return {
-        type: "EDIT_VACANCY",
-        hrId,
-        vacancyId,
-        title,
-        company,
-    }
-}
-
-export function moveVacancyBackAction(hrId, vacancyId) {
-    return {
-        type: "MOVE_VACANCY_BACK",
-        hrId,
-        vacancyId,
-    }
-}
-
-export function moveVacancyForwardAction(hrId, vacancyId) {
-    return {
-        type: "MOVE_VACANCY_FORWARD",
-        hrId,
-        vacancyId,
+        type: "EDIT_PASSENGER",
+        flightId,
+        passengerId,
+        surname,
     }
 }

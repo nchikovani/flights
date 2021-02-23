@@ -1,19 +1,19 @@
-const getHrs = async () => {
+const getFlights = async () => {
   const response = await fetch('./getHr');
-  const hrs = await response.json();
+  const flights = await response.json();
 
-  return hrs;
+  return flights;
 };
 
-const addHr = async (hr) => {
-  const response = await fetch('./addHr', {
+const addFlight = async (flight) => {
+  const response = await fetch('./addFlight', {
     method: 'POST',
     headers: new Headers({
       Accept: 'application/json',
       'Content-Type': 'application/json'
     }),
     mode: 'same-origin',
-    body: JSON.stringify(hr),
+    body: JSON.stringify(flight),
   });
 
   const {info} = await response.json();
@@ -21,15 +21,15 @@ const addHr = async (hr) => {
   return info;
 };
 
-const addVacancy = async (hrId, title, company) => {
-  const response = await fetch('./addVacancy', {
+const addPassenger = async (flightId, surname) => {
+  const response = await fetch('./addPassenger', {
     method: 'POST',
     headers: new Headers({
       Accept: 'application/json',
       'Content-Type': 'application/json'
     }),
     mode: 'same-origin',
-    body: JSON.stringify({hrId, title, company}),
+    body: JSON.stringify({flightId, surname}),
   });
 
   const {info} = await response.json();
@@ -37,15 +37,15 @@ const addVacancy = async (hrId, title, company) => {
   return info;
 };
 
-const editVacancy = async (hrId, vacancyId, title, company) => {
-  const response = await fetch('./editVacancy', {
+const editPassenger = async (flightId, passengerId, surname) => {
+  const response = await fetch('./editPassenger', {
     method: 'PATCH',
     headers: new Headers({
       Accept: 'application/json',
       'Content-Type': 'application/json'
     }),
     mode: 'same-origin',
-    body: JSON.stringify({hrId, vacancyId, title, company}),
+    body: JSON.stringify({flightId, passengerId, surname}),
   });
 
   const {info} = await response.json();
@@ -53,31 +53,15 @@ const editVacancy = async (hrId, vacancyId, title, company) => {
   return info;
 };
 
-const deleteVacancy = async (hrId, vacancyId) => {
-  const response = await fetch('./deleteVacancy', {
+const deletePassenger = async (flightId, passengerId) => {
+  const response = await fetch('./deletePassenger', {
     method: 'DELETE',
     headers: new Headers({
       Accept: 'application/json',
       'Content-Type': 'application/json'
     }),
     mode: 'same-origin',
-    body: JSON.stringify({hrId, vacancyId}),
-  });
-
-  const {info} = await response.json();
-
-  return info;
-};
-
-const moveVacancy = async (hrId, vacancyId, destHrId) => {
-  const response = await fetch('./moveVacancy', {
-    method: 'PATCH',
-    headers: new Headers({
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
-    }),
-    mode: 'same-origin',
-    body: JSON.stringify({hrId, vacancyId, destHrId}),
+    body: JSON.stringify({flightId, passengerId}),
   });
 
   const {info} = await response.json();
@@ -86,10 +70,9 @@ const moveVacancy = async (hrId, vacancyId, destHrId) => {
 };
 
 export {
-  getHrs,
-  addHr,
-  addVacancy,
-  editVacancy,
-  deleteVacancy,
-  moveVacancy,
+  getFlights,
+  addFlight,
+  addPassenger,
+  editPassenger,
+  deletePassenger,
 }

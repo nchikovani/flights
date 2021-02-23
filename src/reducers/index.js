@@ -1,110 +1,66 @@
 const initial = {
-  hrs: []
+  flights: []
 };
 
 function reducer(state=initial, action) {
-  const {hrId, vacancyId} =  action;
+  const {flightId, passengerId} =  action;
   switch (action.type) {
-    case 'SET_HRS':
+    case 'SET_FLIGHT':
       return {
         ...state,
-        hrs: action.hrs,
+        flights: action.flights,
       };
-    case 'ADD_HR':
+    case 'ADD_FLIGHT':
       return {
         ...state,
-        hrs: [
-          ...state.hrs,
+        flights: [
+          ...state.flights,
           {
-            hrName: action.hrName,
-            vacancies: []
+            destination: action.destination,
+            time: action.time,
+            seatsCount: action.seatsCount,
+            passengers: []
           }
         ]
       };
-    case 'ADD_VACANCY':
+    case 'ADD_PASSENGER':
       return {
         ...state,
-        hrs: state.hrs.map(
-          (hr, index) => index !== action.hrId ?
-            {...hr} :
-            {...hr, vacancies: [...hr.vacancies, {title: action.title, company: action.company}]}
+        flights: state.flights.map(
+          (flight, index) => index !== action.flightId ?
+            {...flight} :
+            {...flight, passengers: [...flight.passengers, {surname: action.surname}]}
         )
       };
-    case 'DELETE_VACANCY':
-      const removedVacancy = state.hrs[hrId].vacancies[vacancyId];
-      const newVacancy = state.hrs[hrId].vacancies.filter(vacancy => vacancy !== removedVacancy);
+    case 'DELETE_PASSENGER':
+      const removedPassenger = state.flights[flightId].passengers[passengerId];
+      const newPassengers = state.flights[flightId].passengers.filter(passenger => passenger !== removedPassenger);
       return {
         ...state,
-        hrs: state.hrs.map(
-          (hr, index) => index === hrId ?
+        flights: state.flights.map(
+          (flight, index) => index === flightId ?
             {
-              ...hr,
-              vacancies: newVacancy,
+              ...flight,
+              passengers: newPassengers,
             } :
-            {...hr}
+            {...flight}
         )
       };
-    case 'EDIT_VACANCY':
+    case 'EDIT_PASSENGER':
       return {
         ...state,
-        hrs: state.hrs.map(
-          (hr, index) => index !== action.hrId ?
-            {...hr} :
+        flights: state.flights.map(
+          (flight, index) => index !== action.flightId ?
+            {...flight} :
             {
-              ...hr,
-              vacancies: hr.vacancies.map(
-                (vacancy, vacancyIndex) => vacancyIndex === action.vacancyId ?
-                  {title: action.title, company: action.company} :
-                  vacancy
+              ...flight,
+              passengers: flight.passengers.map(
+                (passenger, passengerIndex) => passengerIndex === action.passengerId ?
+                  {surname: action.surname} :
+                  passenger
               )
             }
         )
-      };
-    case 'MOVE_VACANCY_BACK':
-      const movedBackVacancy = state.hrs[hrId].vacancies[vacancyId];
-      const backVacancy = state.hrs[hrId].vacancies.filter(vacancy => vacancy !== movedBackVacancy);
-      return {
-        ...state,
-        hrs: state.hrs.map((hr, index) => {
-          if (index === hrId - 1) {
-            return {
-              ...hr,
-              vacancies: [...hr.vacancies, movedBackVacancy]
-            }
-          }
-
-          if (index === hrId) {
-            return {
-              ...hr,
-              vacancies: backVacancy,
-            }
-          }
-
-          return { ...hr}
-        })
-      };
-    case 'MOVE_VACANCY_FORWARD':
-      const movedForwardVacancy = state.hrs[hrId].vacancies[vacancyId];
-      const forwardVacancy = state.hrs[hrId].vacancies.filter(vacancy => vacancy !== movedForwardVacancy);
-      return {
-        ...state,
-        hrs: state.hrs.map((hr, index) => {
-          if (index === hrId + 1) {
-            return {
-              ...hr,
-              vacancies: [...hr.vacancies, movedForwardVacancy]
-            }
-          }
-
-          if (index === hrId) {
-            return {
-              ...hr,
-              vacancies: forwardVacancy,
-            }
-          }
-
-          return { ...hr}
-        })
       };
     default:
       return state;
