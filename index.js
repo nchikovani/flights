@@ -8,77 +8,62 @@ app.use(express.json());
 
 
 app.listen(process.env.PORT || 8080, function(){
-  console.log("Сервер ожидает подключения...");
+  console.log("Сервер подключен на порту 8080.");
 });
 
-let hrs = [];
+let flights = [];
 
-app.get('/getHr', async (request, response) => {
-  hrs = await readData();
+app.get('/getFlights', async (request, response) => {
+  flights = await readData();
   response.setHeader('Content-Type', 'application/json');
-  response.json(hrs);
+  response.json(flights);
 });
 
-app.post('/addHr', async (request, response) => {
-  hrs.push(request.body);
-  await writeData(hrs);
-
-  response.setHeader('Content-Type', 'application/json');
-  response.status(200).json({
-    info: `Hr '${request.body.hrName}' was successfully added`
-  });
-});
-
-app.post('/addVacancy', async (request, response) => {
-  const {hrId, title, company} = request.body;
-
-  hrs[hrId].vacancies.push({title, company});
-  await writeData(hrs);
+app.post('/addFlight', async (request, response) => {
+  flights.push(request.body);
+  await writeData(flights);
 
   response.setHeader('Content-Type', 'application/json');
   response.status(200).json({
-    info: `Vacancy '${title}' was successfully added`
+    info: `Flight was successfully added`
   });
 });
 
-app.patch('/editVacancy', async (request, response) => {
-  const {hrId, vacancyId,  title, company} = request.body;
+app.post('/addPassenger', async (request, response) => {
+  const {flightId, surname} = request.body;
 
-  hrs[hrId].vacancies[vacancyId].title = title;
-  hrs[hrId].vacancies[vacancyId].company = company;
-  await writeData(hrs);
+  flights[flightId].passengers.push({surname});
+  await writeData(flights);
 
   response.setHeader('Content-Type', 'application/json');
   response.status(200).json({
-    info: `Vacancy '${title}' was successfully change`
+    info: `Passenger '${surname}' was successfully added`
   });
 });
 
-app.delete('/deleteVacancy', async (request, response) => {
-  const {hrId, vacancyId} = request.body;
+app.patch('/editPassenger', async (request, response) => {
+  const {flightId, passengerId, surname} = request.body;
 
-  hrs[hrId].vacancies = hrs[hrId].vacancies.filter(
-    (vacancy, index) => index !== vacancyId
+  flights[flightId].passengers[passengerId].surname = surname;
+  await writeData(flights);
+
+  response.setHeader('Content-Type', 'application/json');
+  response.status(200).json({
+    info: `Passenger '${surname}' was successfully change`
+  });
+});
+
+app.delete('/deletePassenger', async (request, response) => {
+  const {flightId, passengerId} = request.body;
+
+  flights[flightId].passengers = flights[flightId].passengers.filter(
+    (passenger, index) => index !== passengerId
   );
-  await writeData(hrs);
+  await writeData(flights);
 
   response.setHeader('Content-Type', 'application/json');
   response.status(200).json({
-    info: `Vacancy was successfully delete`
-  });
-});
-
-app.patch('/moveVacancy', async (request, response) => {
-  const {hrId, vacancyId, destHrId} = request.body;
-  const movedVacancy = hrs[hrId].vacancies[vacancyId];
-  hrs[hrId].vacancies = hrs[hrId].vacancies.filter(
-    (vacancy, index) => index !== vacancyId
-  );
-  hrs[destHrId].vacancies.push(movedVacancy);
-  await writeData(hrs);
-  response.setHeader('Content-Type', 'application/json');
-  response.status(200).json({
-    info: `Vacancy was successfully moved`
+    info: `Passenger was successfully delete`
   });
 });
 

@@ -12,8 +12,8 @@ import {addFlight, getFlights, addPassenger} from '../../models/AppModel';
 
 class App extends React.Component {
   async componentDidMount() {
-    // const flights = await getFlights();
-    // this.props.setFlightsDispatch(flights);
+    const flights = await getFlights();
+    this.props.setFlightsDispatch(flights);
   }
 
   onClickAddFlight() {
@@ -27,20 +27,20 @@ class App extends React.Component {
       seatsCount = prompt("Количество мест");
     }
     if (seatsCount) {
-      this.props.addFlightDispatch(destination, time, seatsCount)
-      // addFlight(
-      //  {destination, time, seatsCount},
-      // ).then(info => console.log(info));
+      this.props.addFlightDispatch(destination, time, seatsCount);
+      addFlight(
+       {destination, time, seatsCount, passengers: []},
+      ).then(info => console.log(info));
     }
   }
 
   onClickAddPassenger(flightId) {
     const surname = prompt("Введите фамилию");
     if (surname) {
-      this.props.addPassengerDispatch(flightId, surname)
-      // addPassenger(
-      //   flightId, surname,
-      // ).then(info => console.log(info));
+      this.props.addPassengerDispatch(flightId, surname);
+      addPassenger(
+        flightId, surname,
+      ).then(info => console.log(info));
     }
   }
   render() {
@@ -69,13 +69,13 @@ class App extends React.Component {
               >
                 <div className="card-title">
                   <Typography gutterBottom variant="h6" component="h2">
-                    {flight.destination}
+                    Пункт назначения: {flight.destination}
                   </Typography>
                   <Typography gutterBottom variant="h6" component="h2">
-                    {flight.time}
+                    Время: {flight.time}
                   </Typography>
                   <Typography gutterBottom variant="h6" component="h2">
-                    {flight.seatsCount}
+                    Количество свободных мест: {flight.seatsCount - flight.passengers.length}
                   </Typography>
                 </div>
                 <PassengersList

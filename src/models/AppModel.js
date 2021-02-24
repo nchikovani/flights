@@ -1,5 +1,5 @@
 const getFlights = async () => {
-  const response = await fetch('./getHr');
+  const response = await fetch('./getFlights');
   const flights = await response.json();
 
   return flights;

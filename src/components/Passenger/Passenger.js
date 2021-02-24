@@ -26,7 +26,7 @@ function Passenger({passenger, passengerId, flightId, deletePassengerDispatch, e
                 size="small"
                 onClick={()=> {
                   editPassengerDispatch(flightId, passengerId, surname);
-                  // editPassenger(flightId, passengerId, surname).then(info => console.log(info));
+                  editPassenger(flightId, passengerId, surname).then(info => console.log(info));
                   setIsEdited(false);
                 }}
               >Сохранить</Button>
@@ -44,7 +44,7 @@ function Passenger({passenger, passengerId, flightId, deletePassengerDispatch, e
             size="small"
             onClick={()=> {
               deletePassengerDispatch(flightId, passengerId);
-              // deletePassenger(flightId, passengerId).then(info => console.log(info));
+              deletePassenger(flightId, passengerId).then(info => console.log(info));
             }}
           >
             <DeleteIcon/>
