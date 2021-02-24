@@ -1,4 +1,3 @@
-import './style.scss';
 import Passenger from '../Passenger/Passenger'
 import React from 'react';
 

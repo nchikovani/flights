@@ -44,57 +44,66 @@ class App extends React.Component {
     }
   }
   render() {
+    const sortedFlights = this.props.flights.sort((a, b) => {
+      console.log(a.time - b.time);
+      return a.time - b.time
+    })
+    console.log(sortedFlights);
     return (
       <div className="App">
-        <AppBar position="static" className="app-bar">
+        <AppBar position="static" className="app-bar" color="secondary">
           <Typography variant="h6" noWrap>
             Авиарейсы
           </Typography>
         </AppBar>
         <div className="app-body">
-          <Card className="card">
-            <Button
-              color="primary"
-              className="card__add-flight"
-              onClick={() => this.onClickAddFlight()}
-            >
-              Добавить Рейс
-            </Button>
-          </Card>
-          {
-            this.props.flights.map((flight, index) =>
-              <Card
-                key={index}
-                className="card"
+          <div className="card_wrap">
+            <Card className="card">
+              <Button
+                color="secondary"
+                className="card__add-flight"
+                onClick={() => this.onClickAddFlight()}
               >
-                <div className="card-title">
-                  <Typography gutterBottom variant="h6" component="h2">
-                    Пункт назначения: {flight.destination}
-                  </Typography>
-                  <Typography gutterBottom variant="h6" component="h2">
-                    Время: {flight.time}
-                  </Typography>
-                  <Typography gutterBottom variant="h6" component="h2">
-                    Количество свободных мест: {flight.seatsCount - flight.passengers.length}
-                  </Typography>
-                </div>
-                <PassengersList
-                  passengers={flight.passengers}
-                  flightId={index}
-                />
-                <CardActions
-                  className="card-actions"
+                Добавить Рейс
+              </Button>
+            </Card>
+          </div>
+          {
+            sortedFlights.map((flight, index) =>
+              <div className="card_wrap">
+                <Card
+                  key={index}
+                  className="card"
                 >
-                  <Button
-                    size="small"
-                    color="primary"
-                    onClick={()=>this.onClickAddPassenger(index)}
-                    disabled={!(flight.passengers.length < flight.seatsCount)}
+                  <div className="card-title">
+                    <Typography gutterBottom variant="body1" component="p">
+                      Пункт назначения: {flight.destination}
+                    </Typography>
+                    <Typography gutterBottom variant="body1" component="p">
+                      Время: {flight.time}
+                    </Typography>
+                    <Typography gutterBottom variant="body1" component="p">
+                      Свободных мест: {flight.seatsCount - flight.passengers.length}
+                    </Typography>
+                  </div>
+                  <PassengersList
+                    passengers={flight.passengers}
+                    flightId={index}
+                  />
+                  <CardActions
+                    className="card-actions"
                   >
-                    Забронировать билет
-                  </Button>
-                </CardActions>
-              </Card>
+                    <Button
+                      size="small"
+                      color="secondary"
+                      onClick={()=>this.onClickAddPassenger(index)}
+                      disabled={!(flight.passengers.length < flight.seatsCount)}
+                    >
+                      Забронировать билет
+                    </Button>
+                  </CardActions>
+                </Card>
+              </div>
             )
           }
         </div>

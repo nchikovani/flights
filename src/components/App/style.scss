@@ -8,16 +8,18 @@
   justify-content: flex-start;
 }
 .card {
-  width: 260px;
-  height: 270px;
+  width: 100%;
+  min-height: 150px;
+}
+.card_wrap {
+  width: 270px;
   margin-right: 20px;
   margin-bottom: 20px;
-  position: relative;
 }
 
 .card__add-flight {
   width: 100%;
-  height: 100%;
+  padding: 63px !important;
 }
 
 .card-title{
@@ -27,7 +29,5 @@
 .card-actions {
   display: flex;
   justify-content: center;
-  position: absolute;
-  bottom: 0;
   width: 100%;
 }
